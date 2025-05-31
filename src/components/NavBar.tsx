@@ -2,16 +2,25 @@ import { FaUserCircle, FaBars, FaTimes } from "react-icons/fa";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from '../assets/Images/SafeCityLogo.png';
+import { useAuth } from "../context/Auth"; // Import Auth Context
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const { logout } = useAuth(); // Get logout from context
 
   const handleNavigate = (path: string) => {
     navigate(path);
-    setMenuOpen(false); 
-    setUserMenuOpen(false); 
+    setMenuOpen(false);
+    setUserMenuOpen(false);
+  };
+
+  const handleLogout = () => {
+    logout(); // Clear user from context
+    navigate("/login"); // Navigate to login
+    setUserMenuOpen(false);
+    setMenuOpen(false);
   };
 
   return (
@@ -30,28 +39,16 @@ const Navbar = () => {
 
         {/* Desktop Links */}
         <div className="hidden lg:flex gap-8 items-center font-medium text-white">
-          <span
-            className="cursor-pointer hover:text-yellow-300 transition-colors"
-            onClick={() => handleNavigate("/")}
-          >
+          <span className="cursor-pointer hover:text-yellow-300" onClick={() => handleNavigate("/")}>
             Home
           </span>
-          <span
-            className="cursor-pointer hover:text-yellow-300 transition-colors"
-            onClick={() => handleNavigate("/citizen/dashboard")}
-          >
+          <span className="cursor-pointer hover:text-yellow-300" onClick={() => handleNavigate("/citizen/dashboard")}>
             Dashboard
           </span>
-          <span
-            className="cursor-pointer hover:text-yellow-300 transition-colors"
-            onClick={() => handleNavigate("/citizen/proposals")}
-          >
+          <span className="cursor-pointer hover:text-yellow-300" onClick={() => handleNavigate("/citizen/proposals")}>
             Vote
           </span>
-          <span
-            className="cursor-pointer hover:text-yellow-300 transition-colors"
-            onClick={() => handleNavigate("/citizen/report")}
-          >
+          <span className="cursor-pointer hover:text-yellow-300" onClick={() => handleNavigate("/citizen/report")}>
             Report an Issue
           </span>
         </div>
@@ -66,16 +63,10 @@ const Navbar = () => {
             />
             {userMenuOpen && (
               <div className="absolute top-10 right-0 bg-white text-gray-800 rounded-md shadow-lg py-2 w-40 z-50">
-                <div
-                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                  onClick={() => handleNavigate("/profile")}
-                >
+                <div className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => handleNavigate("/profile")}>
                   My Account
                 </div>
-                <div
-                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                  onClick={() => handleNavigate("/login")}
-                >
+                <div className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={handleLogout}>
                   Logout
                 </div>
               </div>
@@ -97,40 +88,22 @@ const Navbar = () => {
       {menuOpen && (
         <div className="lg:hidden bg-white text-gray-800 border-t shadow-inner px-4 pb-4">
           <div className="flex flex-col gap-4 pt-4 font-medium">
-            <span
-              className="hover:text-blue-600 cursor-pointer transition-colors"
-              onClick={() => handleNavigate("/")}
-            >
+            <span className="hover:text-blue-600 cursor-pointer" onClick={() => handleNavigate("/")}>
               Home
             </span>
-            <span
-              className="hover:text-blue-600 cursor-pointer transition-colors"
-              onClick={() => handleNavigate("/citizen/dashboard")}
-            >
+            <span className="hover:text-blue-600 cursor-pointer" onClick={() => handleNavigate("/citizen/dashboard")}>
               Dashboard
             </span>
-            <span
-              className="hover:text-blue-600 cursor-pointer transition-colors"
-              onClick={() => handleNavigate("/citizen/proposals")}
-            >
+            <span className="hover:text-blue-600 cursor-pointer" onClick={() => handleNavigate("/citizen/proposals")}>
               Vote
             </span>
-            <span
-              className="hover:text-blue-600 cursor-pointer transition-colors"
-              onClick={() => handleNavigate("/citizen/report")}
-            >
+            <span className="hover:text-blue-600 cursor-pointer" onClick={() => handleNavigate("/citizen/report")}>
               Report an Issue
             </span>
-            <span
-              className="hover:text-blue-600 cursor-pointer transition-colors"
-              onClick={() => handleNavigate("/profile")}
-            >
+            <span className="hover:text-blue-600 cursor-pointer" onClick={() => handleNavigate("/profile")}>
               My Account
             </span>
-            <span
-              className="hover:text-blue-600 cursor-pointer transition-colors"
-              onClick={() => handleNavigate("/login")}
-            >
+            <span className="hover:text-blue-600 cursor-pointer" onClick={handleLogout}>
               Logout
             </span>
           </div>

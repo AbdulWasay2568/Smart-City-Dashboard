@@ -4,10 +4,14 @@ import './index.css';
 import Footer from "./components/Footer";
 import Navbar from "./components/NavBar";
 import Sidebar from "./components/Sidebar";
+import {useAuth} from "./context/Auth";
 
-const role = 'admin'; // 'citizen' | 'official' | 'admin' | null
+
+// const role =  null; // 'citizen' | 'official' | 'admin' | null
 
 const App: React.FC = () => {
+  const {role,userId} = useAuth();
+  console.log({role})
   return (
     <>
       {role === null && (

@@ -1,18 +1,22 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useAuth } from "../context/Auth"; // 
 
 const Login = () => {
   const navigate = useNavigate();
+  const { setUser } = useAuth(); // ✅ Use the context
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
+  const [loginError, setLoginError] = useState("");
 
   const validateEmail = (value: string) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(value);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!validateEmail(email)) {
@@ -20,7 +24,40 @@ const Login = () => {
       return;
     }
 
-    console.log("Logging in with:", email, password);
+    try {
+      const response = await fetch("http://localhost:5000/api/v2/users/loginUser", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include", // 🔒 Send cookies (for session/token)
+        body: JSON.stringify({ email, password }),
+      });
+
+      let data = {};
+      try {
+        data = await response.json();
+      } catch {
+        console.warn("No JSON response body.");
+      }
+
+      if (response.ok) {
+        const { userId, role } = data as any; // 👈 Adjust if your API structure differs
+        if (userId && role) {
+          setUser(userId, role); // ✅ Store in context
+          console.log(userId, role);
+          alert("Login successful!");
+          navigate("/"); 
+        } else {
+          setLoginError("Unexpected response. Missing user data.");
+        }
+      } else {
+        setLoginError((data as any).message || "Invalid credentials");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      setLoginError("Something went wrong. Please try again.");
+    }
   };
 
   return (
@@ -32,7 +69,10 @@ const Login = () => {
           <input
             type="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setEmailError("");
+            }}
             placeholder="Email"
             required
             className="p-3 border border-gray-300 rounded-md"
@@ -44,16 +84,22 @@ const Login = () => {
           <input
             type="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setLoginError("");
+            }}
             placeholder="Password"
             required
             className="p-3 border border-gray-300 rounded-md"
           />
 
+          {loginError && (
+            <p className="text-sm text-red-500 -mt-2">{loginError}</p>
+          )}
+
           <button
             type="submit"
             className="p-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition cursor-pointer"
-            
           >
             Login
           </button>

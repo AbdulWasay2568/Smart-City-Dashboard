@@ -4,13 +4,11 @@ import { useState } from "react";
 const Signup = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    fullName: "",
+    name: "",
     email: "",
     password: "",
     confirmPassword: "",
-    phone: "",
-    dob: "",
-    gender: "",
+    contact: "",
     agreed: false,
   });
 
@@ -26,22 +24,82 @@ const Signup = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match!");
-      return;
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  if (formData.password !== formData.confirmPassword) {
+    alert("Passwords do not match!");
+    return;
+  }
+
+  try {
+    const response = await fetch("http://localhost:5000/api/v2/users/registerUser", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        contact: formData.contact,
+        role: "citizen"
+      }),
+    });
+
+    let data = {};
+    try {
+      data = await response.json();
+    } catch (error) {
+      console.warn("No JSON response body.");
     }
 
-    const user = {
-      fullName: formData.fullName,
-      email: formData.email,
-      password: formData.password,
-    };
+    if (response.ok) {
+      alert("Signup successful!");
+      navigate("/login");
+    } else {
+      alert((data as any).message || "Signup failed");
+    }
+  } catch (error) {
+    console.error("Signup error:", error);
+    alert("An error occurred during signup.");
+  }
+};
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
 
-    alert("Signup successful!");
-    navigate("/login");
-  };
+  //   if (formData.password !== formData.confirmPassword) {
+  //     alert("Passwords do not match!");
+  //     return;
+  //   }
+
+  //   try {
+  //     const response = await fetch("http://localhost:5000/api/v2/users/registerUser", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         name: formData.name,
+  //         email: formData.email,
+  //         password: formData.password,
+  //         contact: formData.contact,
+  //       }),
+  //     });
+
+  //     const data = await response.json();
+
+  //     if (response.ok) {
+  //       alert("Signup successful!");
+  //       navigate("/login");
+  //     } else {
+  //       alert(data.message || "Signup failed");
+  //     }
+  //   } catch (error) {
+  //     console.error("Signup error:", error);
+  //     alert("An error occurred during signup.");
+  //   }
+  // };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -49,8 +107,8 @@ const Signup = () => {
         <h2 className="text-2xl font-bold mb-6">Signup</h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <input
-            name="fullName"
-            value={formData.fullName}
+            name="name"
+            value={formData.name}
             onChange={handleChange}
             type="text"
             placeholder="Full Name"
@@ -85,39 +143,15 @@ const Signup = () => {
             className="p-3 border border-gray-300 rounded-md"
           />
           <input
-            name="phone"
-            value={formData.phone}
+            name="contact"
+            value={formData.contact}
             onChange={handleChange}
             type="tel"
-            placeholder="Phone Number"
+            placeholder="Contact Number"
             required
             className="p-3 border border-gray-300 rounded-md"
           />
-          <input
-            name="dob"
-            value={formData.dob}
-            onChange={handleChange}
-            type="date"
-            required
-            min= "1950-01-01"
-            max= "2015-12-31"
-            className="p-3 border border-gray-300 rounded-md"
-          />
-          <div className="text-left">
-            <label className="block mb-2 text-sm">Gender:</label>
-            <select
-              name="gender"
-              value={formData.gender}
-              onChange={handleChange}
-              required
-              className="p-3 border border-gray-300 rounded-md w-full"
-            >
-              <option value="">Select Gender</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
+
           <div className="text-left">
             <label className="text-sm">
               <input

@@ -1,48 +1,101 @@
-// pages/admin/Proposals.tsx
 import React, { useState } from "react";
-import CreateProposalForm from "../../components/CreateProposalForm";
 
-const dummyProposals = [
-  {
-    id: 1,
-    title: "Smart Water Meters",
-    description: "Install smart water meters to reduce wastage.",
-    deadline: "2025-06-15",
-    options: ["Yes", "No"],
-  },
-];
+type CreateProposalFormProps = {
+  onCreate: (newProposal: any) => void;
+};
 
-const AdminProposals = () => {
-  const [proposals, setProposals] = useState(dummyProposals);
+const CreateProposalForm = ({ onCreate }: CreateProposalFormProps) => {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [deadline, setDeadline] = useState("");
+  const [options, setOptions] = useState("");
 
-  const handleCreate = (newProposal: any) => {
-    setProposals([...proposals, { id: proposals.length + 1, ...newProposal }]);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!title || !deadline || !options) {
+      alert("All fields are required.");
+      return;
+    }
+
+    try {
+      const res = await fetch("http://localhost:5000/api/v2/votings/createVoting", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title,
+          description,
+          deadline,
+          options,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data.message || "Error creating proposal.");
+        return;
+      }
+
+      alert("✅ Proposal created successfully!");
+      onCreate(data); // call parent function with new proposal
+      setTitle("");
+      setDescription("");
+      setDeadline("");
+      setOptions("");
+    } catch (error) {
+      console.error("Error creating proposal:", error);
+      alert("❌ Server error while creating proposal.");
+    }
   };
 
   return (
-    <div className="p-6 space-y-6">
-      <h2 className="text-2xl font-semibold">📋 Manage Proposals</h2>
-      <CreateProposalForm onCreate={handleCreate} />
-      <div className="space-y-4">
-        <h3 className="text-lg font-semibold">🗳️ Existing Proposals</h3>
-        {proposals.map((proposal) => (
-          <div
-            key={proposal.id}
-            className="bg-white p-4 rounded-xl shadow border"
-          >
-            <h4 className="text-lg font-medium">{proposal.title}</h4>
-            <p className="text-sm text-gray-700">{proposal.description}</p>
-            <p className="text-xs text-gray-500">
-              Deadline: {new Date(proposal.deadline).toLocaleDateString()}
-            </p>
-            <p className="text-xs text-gray-500">
-              Options: {proposal.options.join(", ")}
-            </p>
-          </div>
-        ))}
-      </div>
-    </div>
+    <form onSubmit={handleSubmit} className="bg-white p-4 rounded-xl shadow space-y-4">
+      <h3 className="text-lg font-semibold">➕ Create New Proposal</h3>
+
+      <input
+        type="text"
+        placeholder="Title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        className="w-full px-3 py-2 border rounded"
+        required
+      />
+
+      <textarea
+        placeholder="Description"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        className="w-full px-3 py-2 border rounded"
+      />
+
+      <input
+        type="date"
+        value={deadline}
+        onChange={(e) => setDeadline(e.target.value)}
+        className="w-full px-3 py-2 border rounded"
+        required
+      />
+
+      <input
+        type="text"
+        placeholder="Options (comma-separated)"
+        value={options}
+        onChange={(e) => setOptions(e.target.value)}
+        className="w-full px-3 py-2 border rounded"
+        required
+      />
+
+      <button
+        type="submit"
+        className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
+      >
+        Submit
+      </button>
+    </form>
   );
 };
 
-export default AdminProposals;
+export default CreateProposalForm;
