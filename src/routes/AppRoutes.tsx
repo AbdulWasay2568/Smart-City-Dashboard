@@ -23,6 +23,7 @@ import UsersTable from "../pages/Admin/UsersTable";
 import AdminProposals from "../pages/Admin/AdminProposals";
 import Reports from "../pages/Admin/Reports";
 import IssueDetails from "../pages/Citizens/IssueDetails";
+import RegisterDepartment from "../pages/Admin/RegisterDepartment"
 
 interface AppRouterProps {
   role: 'citizen' | 'official' | 'admin' | null;
@@ -62,6 +63,8 @@ const AppRouter: React.FC<AppRouterProps> = ({ role }) => {
           <Route path="/admin/users" element={<UsersTable />} />
           <Route path="/admin/proposals" element={<AdminProposals />} />
           <Route path="/admin/reports" element={<Reports />} />
+          <Route path="/admin/register-department" element={<RegisterDepartment />} />
+          
         </>
       )}
 

@@ -1,5 +1,3 @@
-// pages/admin/Dashboard.tsx
-import React from "react";
 import AdminWelcomeBanner from "../../components/AdminWelcomeBanner";
 import AnalyticsGraphs from "../../components/AnalyticsGraphs";
 import Heatmap from "../../components/HeatMap";

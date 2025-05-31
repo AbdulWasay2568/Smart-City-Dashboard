@@ -10,8 +10,8 @@ const Navbar = () => {
 
   const handleNavigate = (path: string) => {
     navigate(path);
-    setMenuOpen(false); // Close mobile menu
-    setUserMenuOpen(false); // Close user dropdown
+    setMenuOpen(false); 
+    setUserMenuOpen(false); 
   };
 
   return (

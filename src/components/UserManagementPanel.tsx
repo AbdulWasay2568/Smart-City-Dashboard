@@ -36,7 +36,6 @@ const UserManagementPanel = () => {
           <tr>
             <th className="px-4 py-2">Name</th>
             <th className="px-4 py-2">Email</th>
-            <th className="px-4 py-2">Role</th>
             <th className="px-4 py-2">Status</th>
             <th className="px-4 py-2 text-center">Actions</th>
           </tr>
@@ -47,17 +46,6 @@ const UserManagementPanel = () => {
               <td className="px-4 py-2">{user.name}</td>
               <td className="px-4 py-2">{user.email}</td>
               <td className="px-4 py-2">
-                <select
-                  value={user.role}
-                  onChange={(e) => changeRole(user.id, e.target.value)}
-                  className="border rounded p-1"
-                >
-                  <option>Citizen</option>
-                  <option>Department Official</option>
-                  <option>Admin</option>
-                </select>
-              </td>
-              <td className="px-4 py-2">
                 {user.active ? (
                   <span className="text-green-600 font-medium">Active</span>
                 ) : (
@@ -67,7 +55,7 @@ const UserManagementPanel = () => {
               <td className="px-4 py-2 text-center space-x-2">
                 <button
                   onClick={() => toggleActive(user.id)}
-                  className={`px-3 py-1 rounded text-white ${
+                  className={`px-3 py-1 rounded text-white cursor-pointer ${
                     user.active ? "bg-yellow-600" : "bg-green-600"
                   }`}
                 >
@@ -75,7 +63,7 @@ const UserManagementPanel = () => {
                 </button>
                 <button
                   onClick={() => deleteUser(user.id)}
-                  className="px-3 py-1 rounded bg-red-600 text-white"
+                  className="px-3 py-1 rounded bg-red-600 text-white cursor-pointer"
                 >
                   Delete
                 </button>

@@ -8,7 +8,7 @@ interface SidebarProps {
 export default function Sidebar({ role }: SidebarProps) {
   return (
     <>
-      {role === 'admin' ? <AdminSidebar /> : <AdminSidebar />}
+      {role === 'admin' ? <AdminSidebar /> : <DOSideBar />}
     </>
   );
 }

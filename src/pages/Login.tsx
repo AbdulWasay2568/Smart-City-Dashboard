@@ -53,6 +53,7 @@ const Login = () => {
           <button
             type="submit"
             className="p-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition cursor-pointer"
+            
           >
             Login
           </button>

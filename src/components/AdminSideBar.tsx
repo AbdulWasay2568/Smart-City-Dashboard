@@ -1,13 +1,21 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { LayoutDashboard, Users, ClipboardList, MessageSquare, FileText, Menu, X } from "lucide-react";
+import {
+  LayoutDashboard,
+  Users,
+  ClipboardList,
+  MessageSquare,
+  FileText,
+  Menu,
+  X,
+} from "lucide-react";
 
 const links = [
   { to: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/admin/users", label: "Users", icon: Users },
   { to: "/admin/proposals", label: "Proposals", icon: ClipboardList },
-  { to: "/admin/chat", label: "Chat", icon: MessageSquare },
   { to: "/admin/reports", label: "Reports", icon: FileText },
+  { to: "/admin/register-department", label: "Add a Department", icon: FileText },
 ];
 
 const AdminSidebar = () => {
@@ -15,7 +23,7 @@ const AdminSidebar = () => {
 
   return (
     <>
-      {/* Hamburger button - visible on mobile only */}
+      {/* Hamburger button for mobile */}
       <button
         className="md:hidden fixed top-4 left-4 z-50 bg-white p-2 rounded-md shadow-md"
         onClick={() => setIsOpen((prev) => !prev)}
@@ -27,31 +35,27 @@ const AdminSidebar = () => {
       {/* Sidebar */}
       <aside
         className={`
-          fixed top-0 left-0 h-full bg-white shadow-lg border-r border-gray-200
+          fixed top-0 left-0 min-h-screen bg-white shadow-lg border-r border-gray-200
           w-64 p-6 pt-16
           transform transition-transform duration-300 ease-in-out
-          md:relative md:translate-x-0 md:w-1/3 md:pt-6 md:block
+          md:relative md:translate-x-0 md:w-1/3 lg:w-[380px] md:pt-6 md:block
           ${isOpen ? "translate-x-0" : "-translate-x-full"}
           z-40
         `}
       >
-        {/* Logo / Header */}
-        <div className="mb-8 border-b border-gray-200 pb-4">
-          <h1 className="text-2xl font-bold text-indigo-600 tracking-wide">Admin Panel</h1>
-        </div>
 
-        {/* Nav Links */}
-        <nav className="flex flex-col space-y-2">
+        {/* Navigation Links */}
+        <nav className="flex flex-col space-y-4">
           {links.map(({ to, label, icon: Icon }) => (
             <NavLink
               key={to}
               to={to}
-              onClick={() => setIsOpen(false)} // Close menu on link click (mobile)
+              onClick={() => setIsOpen(false)}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-2 rounded-lg transition font-medium ${
+                `flex items-center gap-3 px-3 py-2 rounded font-medium transition ${
                   isActive
                     ? "bg-indigo-100 text-indigo-700"
-                    : "text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
+                    : "text-gray-700 hover:bg-blue-100 hover:text-blue-700"
                 }`
               }
             >
@@ -61,13 +65,9 @@ const AdminSidebar = () => {
           ))}
         </nav>
 
-        {/* Footer */}
-        <div className="absolute bottom-6 left-6 right-6 border-t border-gray-200 pt-4 text-sm text-gray-500">
-          © 2025 SkillBridge
-        </div>
       </aside>
 
-      {/* Overlay when sidebar is open on mobile */}
+      {/* Mobile overlay */}
       {isOpen && (
         <div
           className="fixed inset-0 bg-black opacity-30 z-30 md:hidden"
