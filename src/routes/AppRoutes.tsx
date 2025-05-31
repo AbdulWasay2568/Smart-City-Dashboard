@@ -8,6 +8,10 @@ import CitizenDashboard from "../pages/Citizens/CitizenDashboard";
 import Report from "../pages/Citizens/Report";
 import Issues from "../pages/Citizens/Issues";
 import Proposals from "../pages/Citizens/Proposals";
+import DepartmentOfficialDashboard from "../pages/DepartmentOfficials/DepartmentOfficialDashboard";
+import DOIssues from "../pages/DepartmentOfficials/DoIssues";
+import AdminDashboard from "../pages/Admin/AdminDashboard";
+import UsersTable from "../pages/Admin/UsersTable";
 
 const AppRouter: React.FC = () => {
   return (
@@ -24,7 +28,12 @@ const AppRouter: React.FC = () => {
       <Route path="/citizen/proposals" element={<Proposals />} />
 
       {/* DO  */}
-      <Route path="/Department-Official/dashboard" element={<CitizenDashboard />} />
+      <Route path="/official/dashboard" element={<DepartmentOfficialDashboard />} />
+      <Route path="/official/issues" element={<DOIssues />} />
+
+      {/* Admin */}
+      <Route path="/admin/dashboard" element={<AdminDashboard />} />
+      <Route path="/admin/users" element={<UsersTable />} />
       {/* <Route path="/citizen/dashboard" element={<CitizenDashboard />} />
       <Route path="/citizen/dashboard" element={<CitizenDashboard />} />
       <Route path="/citizen/dashboard" element={<CitizenDashboard />} /> */}
