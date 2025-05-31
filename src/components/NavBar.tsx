@@ -11,7 +11,7 @@ const Navbar = () => {
         <div className="flex items-center gap-3">
           <img src="/logo.png" alt="Logo" className="h-8" />
           <span className="text-lg font-bold cursor-pointer hover:text-yellow-300 transition-colors">
-            Bridge Skills
+            Smart City
           </span>
         </div>
 
