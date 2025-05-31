@@ -1,16 +1,18 @@
-// components/CitizenReport/ReportIssueForm.tsx
 import React, { useState } from "react";
 
 const ReportIssueForm = () => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
+    department: "Fire Brigade", 
     category: "Pothole",
     location: "",
     media: null as File | null,
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
@@ -26,7 +28,28 @@ const ReportIssueForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white p-6 rounded-xl shadow space-y-4">
+    <form
+      onSubmit={handleSubmit}
+      className="bg-white p-6 rounded-xl shadow space-y-4"
+    >
+      {/* Department */}
+      <div>
+        <label className="block font-medium mb-1">Department</label>
+        <select
+          name="department"
+          value={formData.department}
+          onChange={handleChange}
+          className="w-full border rounded p-2"
+        >
+          <option>Fire Brigade</option>
+          <option>Waste Management</option>
+          <option>Traffic Control</option>
+          <option>Water Supply</option>
+          <option>Electricity</option>
+        </select>
+      </div>
+
+      {/* Title */}
       <div>
         <label className="block font-medium mb-1">Issue Title</label>
         <input
@@ -39,6 +62,7 @@ const ReportIssueForm = () => {
         />
       </div>
 
+      {/* Description */}
       <div>
         <label className="block font-medium mb-1">Description</label>
         <textarea
@@ -51,6 +75,7 @@ const ReportIssueForm = () => {
         />
       </div>
 
+      {/* Category */}
       <div>
         <label className="block font-medium mb-1">Category</label>
         <select
@@ -66,6 +91,7 @@ const ReportIssueForm = () => {
         </select>
       </div>
 
+      {/* Location */}
       <div>
         <label className="block font-medium mb-1">Location</label>
         <input
@@ -77,9 +103,14 @@ const ReportIssueForm = () => {
         />
       </div>
 
+      {/* Media */}
       <div>
         <label className="block font-medium mb-1">Upload Photo/Video</label>
-        <input type="file" accept="image/*,video/*" onChange={handleFileChange} />
+        <input
+          type="file"
+          accept="image/*,video/*"
+          onChange={handleFileChange}
+        />
       </div>
 
       <button

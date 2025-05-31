@@ -1,5 +1,5 @@
-// components/CitizenIssues/IssueStatusCard.tsx
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 interface IssueProps {
   issue: {
@@ -19,8 +19,17 @@ const statusColor: Record<string, string> = {
 };
 
 const IssueStatusCard: React.FC<IssueProps> = ({ issue }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/citizen/issue/${issue.id}`);
+  };
+
   return (
-    <div className="bg-white p-4 rounded-xl shadow border-l-4 border-gray-300 hover:border-blue-500 transition">
+    <div
+      onClick={handleClick}
+      className="bg-white p-4 rounded-xl shadow border-l-4 border-gray-300 hover:border-blue-500 transition cursor-pointer"
+    >
       <div className="flex justify-between items-center mb-2">
         <h3 className="font-semibold text-lg">{issue.title}</h3>
         <span
@@ -30,7 +39,9 @@ const IssueStatusCard: React.FC<IssueProps> = ({ issue }) => {
         </span>
       </div>
       <p className="text-sm text-gray-600">Category: {issue.category}</p>
-      <p className="text-sm text-gray-500">Reported on: {new Date(issue.date).toLocaleDateString()}</p>
+      <p className="text-sm text-gray-500">
+        Reported on: {new Date(issue.date).toLocaleDateString()}
+      </p>
     </div>
   );
 };

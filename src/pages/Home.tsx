@@ -6,12 +6,12 @@ import CTA from "../components/CTA";
 
 const Home = () => {
   return (
-    <>
+    <div className="flex flex-col justify-center min-h-screen">
       <Hero />
       <HowItWorks />
       <SkillsList />
       <CTA />
-    </>
+    </div>
   );
 };
 

@@ -1,5 +1,4 @@
-// components/CitizenDashboard/ActiveProposals.tsx
-import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const proposals = [
   {
@@ -15,9 +14,18 @@ const proposals = [
 ];
 
 const ActiveProposals = () => {
+  const navigate = useNavigate();
+  
   return (
     <div className="bg-white p-4 rounded-xl shadow h-full">
-      <h3 className="text-lg font-semibold mb-4">📢 Active Proposals</h3>
+        <h3 className="text-lg text-center font-semibold mb-4">📢 Active Proposals</h3>
+
+        <p
+            className="text-sm text-gray-500 text-right mb-4 underline hover:text-blue-500 cursor-pointer"
+            onClick={() => navigate("/citizen/proposals")}
+          >
+            See All
+        </p>      
       <ul className="space-y-3">
         {proposals.map((p) => (
           <li key={p.id}>

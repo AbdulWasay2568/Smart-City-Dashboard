@@ -12,7 +12,7 @@ const ReportPage = () => {
         <h2 className="text-2xl font-semibold">📍 Report a City Issue</h2>
         <button
           onClick={() => setUseAR(!useAR)}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 cursor-pointer"
         >
           {useAR ? "Use Form Instead" : "Use AR to Report"}
         </button>

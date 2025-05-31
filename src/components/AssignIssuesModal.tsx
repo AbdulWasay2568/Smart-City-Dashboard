@@ -1,4 +1,4 @@
-// components/OfficialIssues/AssignIssueModal.tsx
+// components/OfficialIssues/UpdateIssueStatusModal.tsx
 import React, { useState } from "react";
 
 interface Props {
@@ -6,32 +6,33 @@ interface Props {
   onClose: () => void;
 }
 
-const fieldWorkers = ["Ali Raza", "Fatima Bano", "John Doe", "Sarah Khan"];
+const statusOptions = ["Pending", "Assigned", "In Progress", "Resolved"];
 
-const AssignIssueModal: React.FC<Props> = ({ issueId, onClose }) => {
-  const [selectedWorker, setSelectedWorker] = useState("");
+const AssignIssueStatusModal: React.FC<Props> = ({ issueId, onClose }) => {
+  const [selectedStatus, setSelectedStatus] = useState("");
 
   if (issueId === null) return null;
 
-  const handleAssign = () => {
-    alert(`Assigned ${selectedWorker} to issue #${issueId}`);
-    setSelectedWorker("");
+  const handleUpdate = () => {
+    alert(`Issue #${issueId} status updated to "${selectedStatus}"`);
+    setSelectedStatus("");
     onClose();
   };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
       <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-sm">
-        <h3 className="text-lg font-semibold mb-4">Assign Field Worker</h3>
+        <h3 className="text-lg font-semibold mb-4">Update Issue Status</h3>
+
         <select
-          value={selectedWorker}
-          onChange={(e) => setSelectedWorker(e.target.value)}
+          value={selectedStatus}
+          onChange={(e) => setSelectedStatus(e.target.value)}
           className="w-full border p-2 rounded mb-4"
         >
-          <option value="">-- Select Worker --</option>
-          {fieldWorkers.map((worker) => (
-            <option key={worker} value={worker}>
-              {worker}
+          <option value="">-- Select Status --</option>
+          {statusOptions.map((status) => (
+            <option key={status} value={status}>
+              {status}
             </option>
           ))}
         </select>
@@ -44,11 +45,11 @@ const AssignIssueModal: React.FC<Props> = ({ issueId, onClose }) => {
             Cancel
           </button>
           <button
-            onClick={handleAssign}
-            disabled={!selectedWorker}
-            className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+            onClick={handleUpdate}
+            disabled={!selectedStatus}
+            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
           >
-            Assign
+            Update
           </button>
         </div>
       </div>
@@ -56,4 +57,4 @@ const AssignIssueModal: React.FC<Props> = ({ issueId, onClose }) => {
   );
 };
 
-export default AssignIssueModal;
+export default AssignIssueStatusModal;
